@@ -1,0 +1,52 @@
+# .rubocop.yml
+
+inherit_from:
+  - .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+
+# ドキュメントコメントは要求しない
+Style/Documentation:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 120
+
+# specのテストコードやseedはブロックが長くなりやすい
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'db/seeds/development/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/development.rb'
+
+# migrationやserializerは構造上長くなりやすい
+Metrics/MethodLength:
+  Max: 60
+  Exclude:
+    - 'db/migrate/**/*'
+    - 'app/serializers/**/*'
+
+# RailsのControllerやServiceなどは分岐が増えやすいため、
+# デフォルトの17より少し緩める
+# serializerとmigrationは構造上ABC Sizeが大きくなりやすいため除外
+Metrics/AbcSize:
+  Max: 25
+  Exclude:
+    - 'app/serializers/**/*'
+    - 'db/migrate/**/*'
+
+# seedでは変数名に数字を含めることがある
+Naming/VariableNumber:
+  Exclude:
+    - 'db/seeds/**/*'
+
+# Deviseの初期設定では長い行が発生するため
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/devise.rb'

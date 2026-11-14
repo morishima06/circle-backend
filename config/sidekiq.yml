@@ -1,0 +1,12 @@
+:concurrency: 5
+
+:queues:
+  - default
+  - mailers
+
+:scheduler:
+  :schedule:
+    purge_unattached_blobs:
+      cron: '0 3 * * *'
+      class: 'PurgeUnattachedBlobsJob'
+      queue: default

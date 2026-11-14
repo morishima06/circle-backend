@@ -1,0 +1,5 @@
+cart_cleanup:
+  cron: '0 0 * * *'
+  class: CartCleanupJob
+  queue: default
+  description: '古いカートを削除'

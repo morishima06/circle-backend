@@ -1,0 +1,49 @@
+<% full_name = "#{@order.last_name} #{@order.first_name}" %>
+
+ご注文ありがとうございます
+
+<%= full_name %>様
+
+ご注文を受け付けました。
+以下の内容で承っております。
+
+----------------------------------------
+
+注文番号:
+<%= @order.number %>
+
+注文日時:
+<%= l(@order.ordered_at, format: :long) %>
+
+お支払い方法:
+<%= @order.payments.first.payment_method %>
+
+----------------------------------------
+
+【配送先】
+
+〒<%= @order.postal_code %>
+<%= @order.prefecture %><%= @order.city %>
+<%= @order.address_line1 %>
+<%= @order.address_line2 %>
+
+<%= full_name %>様
+
+----------------------------------------
+
+【注文商品】
+
+<% @order.order_items.each do |item| %>
+・<%= item.name %>
+  数量: <%= item.quantity %>
+  金額: ¥<%= number_with_delimiter(item.price) %>
+
+<% end %>
+
+----------------------------------------
+
+送料:
+¥<%= number_with_delimiter(@order.shipping_fee) %>
+
+合計金額:
+¥<%= number_with_delimiter(@order.total) %>

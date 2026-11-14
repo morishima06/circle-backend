@@ -1,0 +1,47 @@
+ja:
+  activerecord:
+    attributes:
+      customer:
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認用）
+        last_name: 姓
+        first_name: 名
+        last_name_kana: セイ
+        first_name_kana: メイ
+        phone_number: 電話番号
+
+      product:
+        name: 商品名
+        price: 価格
+        stock: 在庫数
+        description: 商品説明
+
+      favorite:
+        customer: お気に入り
+        product: 商品
+
+      order:
+        customer: 会員
+        total_price: 合計金額
+        status: 注文状況
+
+      address:
+        postal_code: 郵便番号
+        prefecture: 都道府県
+        city: 市区町村
+        address1: 番地
+        address2: 建物名
+
+    errors:
+      models:
+        customer:
+          attributes:
+            email:
+              taken: このメールアドレスは既に登録されています
+
+        favorite:
+          attributes:
+            customer:
+              product_id:
+                taken: この商品は既にお気に入り登録されています

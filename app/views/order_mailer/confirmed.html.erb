@@ -1,0 +1,121 @@
+<% full_name = "#{@order.last_name} #{@order.first_name}" %>
+
+<div style="max-width: 600px; margin: 0 auto; font-family: sans-serif; color: #333; line-height: 1.7;">
+
+  <h1 style="font-size: 24px; margin-bottom: 24px;">
+    ご注文ありがとうございます
+  </h1>
+
+  <p><%= full_name %>様</p>
+
+  <p>
+    ご注文を受け付けました。<br>
+    以下の内容で承っております。
+  </p>
+
+  <hr style="margin: 32px 0;">
+
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="padding: 8px 0; font-weight: bold;">注文番号</td>
+      <td><%= @order.number %></td>
+    </tr>
+
+    <tr>
+      <td style="padding: 8px 0; font-weight: bold;">注文日時</td>
+      <td><%= l(@order.ordered_at, format: :long) %></td>
+    </tr>
+
+    <tr>
+      <td style="padding: 8px 0; font-weight: bold;">お支払い方法</td>
+      <td><%= @order.payments.first.payment_method %></td>
+    </tr>
+  </table>
+
+  <hr style="margin: 32px 0;">
+
+  <h2 style="font-size: 18px; margin-bottom: 12px;">
+    配送先
+  </h2>
+
+  <p>
+    〒<%= @order.postal_code %><br>
+    <%= @order.prefecture %>
+    <%= @order.city %>
+    <%= @order.address_line1 %>
+    <%= @order.address_line2 %><br>
+    <%= full_name %>様
+  </p>
+
+  <hr style="margin: 32px 0;">
+
+  <h2 style="font-size: 18px; margin-bottom: 16px;">
+    注文商品
+  </h2>
+
+  <table
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    style="border-collapse: collapse;"
+  >
+    <thead>
+      <tr>
+        <th align="left" style="border-bottom: 1px solid #ddd; padding: 12px 0;">
+          商品
+        </th>
+
+        <th align="center" style="border-bottom: 1px solid #ddd;">
+          数量
+        </th>
+
+        <th align="right" style="border-bottom: 1px solid #ddd;">
+          金額
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td style="padding: 16px 0;">
+            <%= item.name %>
+          </td>
+
+          <td align="center">
+            <%= item.quantity %>
+          </td>
+
+          <td align="right">
+            ¥<%= number_with_delimiter(item.price) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <hr style="margin: 32px 0;">
+
+  <table width="100%">
+    <tr>
+      <td>送料</td>
+      <td align="right">
+        ¥<%= number_with_delimiter(@order.shipping_fee) %>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding-top: 12px; font-size: 18px; font-weight: bold;">
+        合計金額
+      </td>
+
+      <td
+        align="right"
+        style="padding-top: 12px; font-size: 18px; font-weight: bold;"
+      >
+        ¥<%= number_with_delimiter(@order.total) %>
+      </td>
+    </tr>
+  </table>
+
+</div>
