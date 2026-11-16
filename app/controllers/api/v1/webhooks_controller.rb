@@ -24,7 +24,7 @@ module Api
             stripe_payment_intent_id: payment_intent.id
           )
 
-          Payments::StatusUpdateService.call(payment, payment_intent)
+          ::Payments::StatusUpdateService.call(payment, payment_intent)
         end
 
         head :ok

@@ -5,7 +5,7 @@ module Api
     class CollectionsController < ApplicationController
       def index
         # 1. URL解析・見出し作成
-        resolved = Collections::ContextResolver.new(params).call
+        resolved = ::Collections::ContextResolver.new(params).call
 
         if resolved.designer_not_found
           render json: { error: 'Designer Not Found' },
@@ -14,7 +14,7 @@ module Api
         end
 
         # 2. 商品・フィルター情報の取得
-        result = Collections::Query.new(
+        result = ::Collections::Query.new(
           context: resolved.context,
           category: resolved.category,
           designer: resolved.designer,

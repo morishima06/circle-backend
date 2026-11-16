@@ -12,7 +12,7 @@ module Orders
 
         ReservedStock.where(order_item: order.order_items).destroy_all
 
-        Carts::CleanupService.new(order).call
+        ::Carts::CleanupService.new(order).call
 
         order.confirm!(payment:)
       end
