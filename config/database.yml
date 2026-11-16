@@ -95,6 +95,4 @@ test:
 #
 production:
   <<: *default
-  database: circle_production
-  username: postgres
-  password: <%= ENV['BACKEND_DATABASE_PASSWORD'] %>
+  url: <%= ENV.fetch("DATABASE_URL") %>
