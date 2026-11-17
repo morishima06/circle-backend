@@ -14,10 +14,11 @@ RUN bundle install
 
 COPY . .
 
-# 起動スクリプトを設定
-RUN chmod +x /app/docker-entrypoint.sh
+# 改行コードをLFに統一
+RUN sed -i 's/\r$//' /app/docker-entrypoint.sh && \
+    chmod +x /app/docker-entrypoint.sh
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/app/docker-entrypoint.sh"]
 
 EXPOSE 5001
 
