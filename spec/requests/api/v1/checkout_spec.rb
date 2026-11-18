@@ -143,9 +143,9 @@ RSpec.describe 'Checkout API', type: :request do
                    'X-CSRF-Token' => csrf_token
                  }
             puts "STATUS: #{response.status}"
-  puts "BODY: #{response.body}"
+            puts "BODY: #{response.body}"
 
-  expect(response).to have_http_status(:ok)
+            expect(response).to have_http_status(:ok)
           end.to change(Payment, :count).by(1)
 
           expect(response).to have_http_status(:ok)
