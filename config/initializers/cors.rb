@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
-# config/initializers/cors.rb
+allowed_origins =
+  if Rails.env.production?
+    [ENV.fetch('FRONTEND_URL')]
+  else
+    ['http://localhost:3000', 'http://localhost:5000']
+  end
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ['http://localhost:3000', 'http://localhost:5000']
+    origins(*allowed_origins)
+
     resource '*',
              headers: :any,
              methods: %i[get post put patch delete options head],
-             credentials: true # クッキーを含めるために必須
+             credentials: true
   end
 end
