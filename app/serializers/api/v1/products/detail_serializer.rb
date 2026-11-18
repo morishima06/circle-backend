@@ -8,7 +8,7 @@ module Api
           @product = product
         end
 
- def as_json(*)
+        def as_json(*)
           {
             product: {
               id: @product.id,
@@ -27,7 +27,7 @@ module Api
             }
           }
         end
-        
+
         private
 
         def designer_json
