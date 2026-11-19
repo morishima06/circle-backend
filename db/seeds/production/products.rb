@@ -718,48 +718,87 @@ product_data = [
   }
 ]
 
-def seed_image_path(filename)
-  Rails.root.join("db/seeds/development/images/#{filename}")
-end
 
-product_data.each do |data|
-  image_filenames = data.delete(:images) || []
+# ===============================
+# 3. 画像紐付けメソッド定義
+# ===============================
 
-  begin
-    Rails.logger.debug { "Creating product: #{data[:name]}" }
+def attach_product_image(product_image, filename)
+  if Rails.env.production?
+    # S3上のオブジェクトキー
+    key = "products/#{filename}"
 
-    product = Product.create!(data)
+    service_name = Rails.application.config.active_storage.service.to_s
 
-    image_filenames.each_with_index do |filename, index|
-      product_image = product.product_images.create!(
-        position: index + 1
-      )
+    # 既存のBlobを検索
+    blob = ActiveStorage::Blob.find_by(
+      key: key,
+      service_name: service_name
+    )
 
-      product_image.image.attach(
-        io: File.open(seed_image_path(filename)),
-        filename:
+    unless blob
+      # S3から画像を取得
+      file_data = ActiveStorage::Blob.service.download(key)
+
+      # 既存S3画像に対応するBlobレコードを作成
+      blob = ActiveStorage::Blob.create!(
+        key: key,
+        filename: filename,
+        content_type: Marcel::MimeType.for(filename),
+        metadata: {},
+        byte_size: file_data.bytesize,
+        checksum: Digest::MD5.base64digest(file_data),
+        service_name: service_name
       )
     end
-  rescue StandardError => e
-    Rails.logger.debug { " Failed: #{data[:name]}" }
-    Rails.logger.debug e.message
-    raise
+
+    # 商品画像にBlobを紐付け
+    product_image.image.attach(blob)
+
+  else
+    # developmentではローカル画像を使用
+    path = Rails.root.join(
+      "db/seeds/development/images/#{filename}"
+    )
+
+    product_image.image.attach(
+      io: File.open(path),
+      filename: filename
+    )
   end
 end
+
+
 # ===============================
-# trigram index test dummy data
+# 4. 商品データをループ
 # ===============================
 
-# base_product = Product.first
+product_data.each do |data|
 
-# 1000.times do |i|
-#   Product.create!(
-#     name: "test product #{i}",
-#     category: base_product.category,
-#     designer: base_product.designer,
-#     color: base_product.color,
-#     price: 1000,
-#     sale_price: 500,
-#     release_at: Time.current
-#   )
-# end
+  # 画像ファイル名を取得
+  image_filenames = data[:images] || []
+
+  # ===============================
+  # 5. 商品を作成
+  # ===============================
+
+  product = Product.create!(
+    data.except(:images)
+  )
+
+  # ===============================
+  # 6. 画像レコードを作成して紐付け
+  # ===============================
+
+  image_filenames.each_with_index do |filename, index|
+
+    # ProductImageレコードを作成
+    product_image = product.product_images.create!(
+      position: index + 1
+    )
+
+    # 画像を紐付け
+    attach_product_image(product_image, filename)
+
+  end
+end
