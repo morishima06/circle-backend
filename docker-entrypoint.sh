@@ -1,9 +1,10 @@
 #!/bin/sh
 set -e
 
-echo "Running database migrations..."
-
-RAILS_ENV=production bundle exec rails db:migrate
+if [ "$RAILS_ENV" = "production" ]; then
+  echo "Running database migrations..."
+  bundle exec rails db:migrate
+fi
 
 echo "Starting Rails server..."
 

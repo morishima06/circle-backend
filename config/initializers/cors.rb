@@ -4,7 +4,7 @@ allowed_origins =
   if Rails.env.production?
     [ENV.fetch('FRONTEND_URL')]
   else
-    ['http://localhost:3000', 'http://localhost:5000']
+    ['http://localhost:3000']
   end
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do

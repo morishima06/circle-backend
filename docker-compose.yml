@@ -4,6 +4,7 @@ services:
     ports:
       - '5001:5001'
     environment:
+      RAILS_ENV: development
       DATABASE_HOST: db
       DATABASE_NAME: circle_development
       DATABASE_USERNAME: postgres
@@ -19,6 +20,7 @@ services:
     build: .
     command: bundle exec sidekiq
     environment:
+      RAILS_ENV: development
       DATABASE_HOST: db
       DATABASE_NAME: circle_development
       DATABASE_USERNAME: postgres
