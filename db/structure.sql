@@ -1,7 +1,7 @@
-\restrict Z8PmLuRj5JaWZyLfFPzz1eyybuHiEhxBQoKfxcJHP3Ad4aNTfwNQ44kj1clx3vj
+\restrict 6ZJjFQ0RbJ6R193IyaS0Iv9JNsmR5JYDIYwQSp2MUb2QlmAn44JDPYeinMpgLux
 
 -- Dumped from database version 14.13 (Debian 14.13-1.pgdg120+1)
--- Dumped by pg_dump version 15.19 (Debian 15.19-0+deb12u1)
+-- Dumped by pg_dump version 14.25 (Debian 14.25-1.pgdg12+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -13,13 +13,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
-
 
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
@@ -1989,7 +1982,7 @@ ALTER TABLE ONLY public.products
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Z8PmLuRj5JaWZyLfFPzz1eyybuHiEhxBQoKfxcJHP3Ad4aNTfwNQ44kj1clx3vj
+\unrestrict 6ZJjFQ0RbJ6R193IyaS0Iv9JNsmR5JYDIYwQSp2MUb2QlmAn44JDPYeinMpgLux
 
 SET search_path TO "$user", public;
 

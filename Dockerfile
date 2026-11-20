@@ -3,8 +3,17 @@ FROM ruby:3.2.3
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
-      libvips \
-      postgresql-client && \
+      ca-certificates \
+      curl \
+      gnupg \
+      libvips && \
+    install -d /usr/share/postgresql-common/pgdg && \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+      -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc && \
+    echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" \
+      > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update -qq && \
+    apt-get install -y --no-install-recommends postgresql-client-14 && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
