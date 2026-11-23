@@ -94,16 +94,17 @@ Rails.application.configure do
 
   backend_uri = URI.parse(ENV.fetch('BACKEND_URL'))
 
-  config.action_mailer.default_url_options = {
+  default_url_options = {
     host: backend_uri.host,
     protocol: backend_uri.scheme
   }
 
- config.action_controller.default_url_options = {
-  host: backend_uri.host,
-  protocol: backend_uri.scheme
-}
-  
+  config.action_mailer.default_url_options = default_url_options
+  config.action_controller.default_url_options = default_url_options
+
+  config.after_initialize do
+    Rails.application.routes.default_url_options = default_url_options
+  end  
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
   # middleware. The `delay` is used to determine how long to wait after a write
