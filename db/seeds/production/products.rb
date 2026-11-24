@@ -718,7 +718,6 @@ product_data = [
   }
 ]
 
-
 # ===============================
 # 3. 画像紐付けメソッド定義
 # ===============================
@@ -732,8 +731,8 @@ def attach_product_image(product_image, filename)
 
     # 既存のBlobを検索
     blob = ActiveStorage::Blob.find_by(
-      key: key,
-      service_name: service_name
+      key:,
+      service_name:
     )
 
     unless blob
@@ -742,13 +741,13 @@ def attach_product_image(product_image, filename)
 
       # 既存S3画像に対応するBlobレコードを作成
       blob = ActiveStorage::Blob.create!(
-        key: key,
-        filename: filename,
+        key:,
+        filename:,
         content_type: Marcel::MimeType.for(filename),
         metadata: {},
         byte_size: file_data.bytesize,
         checksum: Digest::MD5.base64digest(file_data),
-        service_name: service_name
+        service_name:
       )
     end
 
@@ -763,18 +762,16 @@ def attach_product_image(product_image, filename)
 
     product_image.image.attach(
       io: File.open(path),
-      filename: filename
+      filename:
     )
   end
 end
-
 
 # ===============================
 # 4. 商品データをループ
 # ===============================
 
 product_data.each do |data|
-
   # 画像ファイル名を取得
   image_filenames = data[:images] || []
 
@@ -791,7 +788,6 @@ product_data.each do |data|
   # ===============================
 
   image_filenames.each_with_index do |filename, index|
-
     # ProductImageレコードを作成
     product_image = product.product_images.create!(
       position: index + 1
@@ -799,6 +795,5 @@ product_data.each do |data|
 
     # 画像を紐付け
     attach_product_image(product_image, filename)
-
   end
 end
