@@ -40,6 +40,7 @@ gem 'rotp'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
 
+gem 'aws-sdk-s3', require: false
 gem 'devise-i18n'
 gem 'devise-two-factor'
 gem 'image_processing', '~> 1.2'
@@ -50,7 +51,6 @@ gem 'ruby-vips'
 gem 'sidekiq-cron'
 gem 'stripe'
 gem 'whenever', require: false
-gem 'aws-sdk-s3', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 
