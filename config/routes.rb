@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Health Check
+  get '/up', to: 'health#show'
+  get '/health/ready', to: 'health#ready'
+
   # Customer authentication (Devise)
   devise_for :customers,
              path: 'api/v1',
