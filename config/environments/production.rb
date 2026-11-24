@@ -104,7 +104,7 @@ Rails.application.configure do
 
   config.after_initialize do
     Rails.application.routes.default_url_options = default_url_options
-  end  
+  end
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
   # middleware. The `delay` is used to determine how long to wait after a write
