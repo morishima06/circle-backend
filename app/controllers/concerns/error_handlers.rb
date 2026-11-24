@@ -62,6 +62,7 @@ module ErrorHandlers
   end
 
   def internal_error(error)
+    Rails.logger.error(" INTERNAL_ERROR HANDLER CALLED ")
     Rails.logger.error("#{error.class} #{error.message}")
     Rails.logger.error(error.backtrace.join("\n"))
 
