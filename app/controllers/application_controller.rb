@@ -26,7 +26,7 @@ class ApplicationController < ActionController::API
     cookies['CSRF-TOKEN'] = {
       value: form_authenticity_token,
       httponly: false,
-      same_site: :lax,
+      same_site: Rails.env.production? ? :none : :lax,
       secure: Rails.env.production?
     }
   end
