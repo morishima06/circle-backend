@@ -3,6 +3,8 @@
 class HealthController < ApplicationController
 
   def show
+      Rails.logger.info('[Log Check] HealthController reached')
+
     render json: {
       status: "ok"
     }, status: :ok
