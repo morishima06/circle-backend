@@ -12,33 +12,31 @@ class HealthController < ApplicationController
 
   # DB・Redisの接続確認
   def ready
-    checks = {
-      database: database_check,
-      # redis: redis_check
-    }
+    database_ok = ActiveRecord::Base.connection.active?
 
-    healthy = checks.values.all? { |status| status == "ok" }
+    redis_ok = Sidekiq.redis do |redis|
+      redis.ping == 'PONG'
+    end
 
-    render json: {
-      status: healthy ? "ok" : "error",
-      checks: checks
-    }, status: healthy ? :ok : :service_unavailable
-  end
-
-  private
-
-  def database_check
-    ActiveRecord::Base.connection.execute("SELECT 1")
-    "ok"
+    if database_ok && redis_ok
+      render json: {
+        status: 'ok',
+        database: 'ok',
+        redis: 'ok'
+      }, status: :ok
+    else
+      render json: {
+        status: 'error',
+        database: database_ok ? 'ok' : 'error',
+        redis: redis_ok ? 'ok' : 'error'
+      }, status: :service_unavailable
+    end
   rescue StandardError
-    "error"
+    render json: {
+      status: 'error',
+      message: 'dependency check failed'
+    }, status: :service_unavailable
   end
-
-  # def redis_check
-  #   Sidekiq.redis { |connection| connection.ping }
-  #   "ok"
-  # rescue StandardError
-  #   "error"
-  # end
+  
 
 end
